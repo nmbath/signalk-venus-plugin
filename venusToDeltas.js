@@ -134,6 +134,19 @@ module.exports = function (app, options, handleMessage) {
         }
       }
     ],
+    '/Link/NetworkStatus': [
+      {
+        path: m => {
+          return makePath(m, `${m.instanceName}.mode`)
+        },
+        conversion: convertNetworkStatus
+      },
+      {
+        path: m => {
+          return makePath(m, `${m.instanceName}.modeNumber`)
+        }
+      }
+    ],
     '/ErrorCode': {
       path: m => {
         return 'notifications.' + makePath(m, `${m.instanceName}.error`)
@@ -821,12 +834,10 @@ const stateMaps = {
 
   'com.victronenergy.alternator': {
     0: 'off',
-    1: 'bulk',
-    2: 'absorbtion',
+    3: 'bulk',
+    4: 'absorbtion',
     5: 'float',
-    7: 'Ext Control',
-    8: 'disabled',
-    9: 'float'
+    252: 'Ext. Control'
   },
 
   'com.victronenergy.dcdc': {
@@ -904,11 +915,6 @@ const modeMaps = {
     4: 'off',
     252: 'Standby'
   },
-  'com.victronenergy.alternator': {
-    0: 'standalone',
-    1: 'master',
-    2: 'slave'
-  },
   'com.victronenergy.dcdc': {
     0: 'standalone',
     1: 'master',
@@ -916,12 +922,19 @@ const modeMaps = {
   }
 }
 
+const networkStatusMaps = {
+  'com.victronenergy.alternator': {
+    0: 'standalone',
+    1: 'master',
+    4: 'slave'
+  },
+}
+
 const statePropName = {
   'com.victronenergy.vebus': 'chargingMode',
   'com.victronenergy.charger': 'chargingMode',
   'com.victronenergy.solarcharger': 'controllerMode',
   'com.victronenergy.inverter': 'inverterMode',
-  'com.victronenergy.alternator': 'chargingMode',
   'com.victronenergy.dcdc': 'chargingMode'
 }
 
@@ -932,6 +945,11 @@ function getStatePropName (msg) {
 function convertMode (msg) {
   var modeMap = modeMaps[senderNamePrefix(msg.senderName)]
   return (modeMap && modeMap[Number(msg.value)]) || 'unknown'
+}
+
+function convertNetworkStatus (msg) {
+  var networkStatusMap = networkStatusMaps[senderNamePrefix(msg.senderName)]
+  return (networkStatusMap && networkStatusMap[Number(msg.value)]) || 'unknown'
 }
 
 const acinSourceMap = {
