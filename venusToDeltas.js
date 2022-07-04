@@ -837,7 +837,27 @@ const stateMaps = {
     7: 'Ext Control',
     8: 'disabled',
     9: 'float'
-	}
+  },
+
+  'com.victronenergy.battery': {
+    0: 'initializing',
+    1: 'initializing',
+    2: 'initializing',
+    3: 'initializing',
+    4: 'initializing',
+    5: 'initializing',
+    6: 'initializing',
+    7: 'initializing',
+    8: 'initializing',
+    9: 'running',
+    10: 'error',
+    12: 'shutdown',
+    13: 'updating',
+    14: 'standby',
+    15: 'going to run',
+    16: 'pre-charging',
+    17: 'contactor check'
+  }
 }
 
 function senderNamePrefix (senderName) {
@@ -880,10 +900,9 @@ const modeMaps = {
     5: 'eco'
   },
   'com.victronenergy.battery': {
-    0: 'sleep',
-    1: 'hibernation',
-    2: 'standby',
-    3: 'on'
+    3: 'on',
+    4: 'off',
+    252: 'Standby'
   },
   'com.victronenergy.alternator': {
     0: 'standalone',
@@ -902,7 +921,6 @@ const statePropName = {
   'com.victronenergy.charger': 'chargingMode',
   'com.victronenergy.solarcharger': 'controllerMode',
   'com.victronenergy.inverter': 'inverterMode',
-  'com.victronenergy.battery': 'mode',
   'com.victronenergy.alternator': 'chargingMode',
   'com.victronenergy.dcdc': 'chargingMode'
 }
